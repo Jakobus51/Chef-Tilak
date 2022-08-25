@@ -36,9 +36,6 @@ namespace Chef_Tilak
         {
             gcProducts.DataSource = projectData.ProductList;
             luProductCategory.DataSource = projectData.RecipesCategories;
-
-
-
         }
 
         private void bbAddProduct_ItemClick(object sender, DevExpress.XtraBars.ItemClickEventArgs e)
@@ -47,6 +44,8 @@ namespace Chef_Tilak
             wzrdAddProduct.ShowDialog();
             gvProducts.RefreshData();
         }
+
+       
 
         private void bbRemoveProduct_ItemClick(object sender, DevExpress.XtraBars.ItemClickEventArgs e)
         {
@@ -67,11 +66,24 @@ namespace Chef_Tilak
             }
         }
 
+        private void bbDetailedOverview_ItemClick(object sender, DevExpress.XtraBars.ItemClickEventArgs e)
+        {
+            SellProduct focusedProduct = (SellProduct)gvProducts.GetRow(gvProducts.FocusedRowHandle);
+
+            if (focusedProduct != null)
+            {
+                FormCostBreakdown formCostBreakdown = new(focusedProduct);
+                formCostBreakdown.Show();
+            }
+            else
+            {
+                MessageBox.Show("Please select a product", "warning");
+            }
+        }
+
         private void gvProducts_CellValueChanged(object sender, DevExpress.XtraGrid.Views.Base.CellValueChangedEventArgs e)
         {
-            SellProduct changedProduct = (SellProduct)gvProducts.GetRow(gvProducts.FocusedRowHandle);
-
-          
+            SellProduct changedProduct = (SellProduct)gvProducts.GetRow(gvProducts.FocusedRowHandle);          
 
             if (e.Column.Caption == "Sell Price (Inc)")
             {
@@ -144,9 +156,6 @@ namespace Chef_Tilak
             }
         }
 
-        private void bbDetailedOverview_ItemClick(object sender, DevExpress.XtraBars.ItemClickEventArgs e)
-        {
-
-        }
+       
     }
 }

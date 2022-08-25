@@ -115,5 +115,77 @@ namespace Chef_Tilak.DataClassses
             this.ProductionCostBreakdown = new();
         }
 
+        public void UpdateProduct(ProjectData projectData)
+        {
+            Recipe recipe = projectData.RecipeList.Find(x => x.Code.Equals(this.RecipeCode));
+
+            Packaging packaging = recipe.PackagingList.Find(x => x.Code.Equals(this.PackagingCode));
+
+            this.Name = recipe.RecipeName + "\r\n(" + packaging.Name + ")";
+            this.RecipeName = recipe.RecipeName;
+            this.PackagingName = packaging.Name;
+
+            this.Category = recipe.Category;
+            this.Volume = packaging.RecipeQuantity;
+            this.ProductionCostExc = packaging.ProductionPriceExc;
+            this.ProductionCostInc = packaging.ProductionPriceInc;
+
+            if (this.SellPriceInc != 0)
+            {
+                this.MarginInc = (this.SellPriceInc - this.ProductionCostExc) / this.SellPriceInc;
+                this.ProfitInc = this.SellPriceInc - this.ProductionCostExc;
+            }
+
+            this.CalculateProductionCostBreakdown(projectData, packaging, recipe);
+        }
+
+
+        public void CalculateProductionCostBreakdown(ProjectData projectData, Packaging packaging, Recipe recipe)
+        {
+            List<ProductDataPoint> costList = new List<ProductDataPoint>();
+
+            //Packaging itself
+            if (packaging != null)
+            {
+                costList.Add(new()
+                {
+                    Name = packaging.Name,
+                    Code = packaging.Code,
+                    Category = "Packaging",
+                    Cost = packaging.PriceExc,
+                });
+
+                //Packaging additional 
+                if (packaging.AdditionalCostExc != 0)
+                {
+                    costList.Add(new()
+                    {
+                        Name = "Extra Packaging Cost",
+                        Code = packaging.Code,
+                        Category = "Packaging Extra",
+                        Cost = packaging.AdditionalCostExc,
+                    });
+                }
+            }            
+
+            //Ingredient Cost 
+            foreach (Ingredient ingredient in recipe.RecipeIngredientList.FindAll(x => x.Code != Guid.Empty))
+            {
+                decimal percentage = ingredient.RecipePriceExc / recipe.TotalIngredientCostExc;
+                //Just the toal cost minus everything that is not an ingredient cost
+                decimal productIngredientCost = this.ProductionCostExc - packaging.PriceExc - packaging.AdditionalCostExc;
+                costList.Add(new()
+                {
+                    Name = ingredient.Name,
+                    Code = ingredient.Code,
+                    Category = "Ingredients",
+                    Cost = productIngredientCost * percentage,
+                });
+            }
+            this.ProductionCostBreakdown.Clear();
+            this.ProductionCostBreakdown = costList;
+           
+        }
+
     }
 }

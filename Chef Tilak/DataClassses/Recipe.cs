@@ -36,6 +36,11 @@ namespace Chef_Tilak.DataClassses
         /// <summary>
         /// Packaging()s of the recipe
         /// </summary>
+        public List<Packaging> PackagingList { get; set; }
+
+        /// <summary>
+        /// Packaging()s of the recipe
+        /// </summary>
         public List<Packaging> packagingList { get; set; }
 
         /// <summary>
@@ -83,7 +88,7 @@ namespace Chef_Tilak.DataClassses
         public Recipe()
         {
             this.RecipeIngredientList = new();
-            this.packagingList = new();
+            this.PackagingList = new();
         }
 
 
@@ -107,7 +112,7 @@ namespace Chef_Tilak.DataClassses
             this.calculateRecipeIngredientCostExc();
             totalCost += this.TotalIngredientCostExc;
 
-            foreach (Packaging packaging in this.packagingList)
+            foreach (Packaging packaging in this.PackagingList)
             {
                 totalCost += packaging.NumberOfPackagings * (packaging.PriceExc + packaging.AdditionalCostExc);
             }
@@ -134,7 +139,7 @@ namespace Chef_Tilak.DataClassses
             this.calculateRecipeIngredientCostInc();
             totalCost += this.TotalIngredientCostInc;
 
-            foreach (Packaging packaging in this.packagingList)
+            foreach (Packaging packaging in this.PackagingList)
             {
                 totalCost += packaging.NumberOfPackagings * (packaging.PriceInc + packaging.AdditionalCostInc);
             }
@@ -148,12 +153,12 @@ namespace Chef_Tilak.DataClassses
             this.calculateRecipeIngredientCostExc();
             this.calculateRecipeIngredientCostInc();
 
-            if (this.packagingList.Count() == 1)
+            if (this.PackagingList.Count() == 1)
             {
 
                 decimal pricePP1Exc = 0M;
                 decimal pricePP1Inc = 0M;
-                Packaging package1 = this.packagingList[0];
+                Packaging package1 = this.PackagingList[0];
                 if (package1 != null)
                 {
                     pricePP1Exc = package1.PriceExc + package1.AdditionalCostExc + (this.TotalIngredientCostExc / package1.NumberOfPackagings);
@@ -166,15 +171,15 @@ namespace Chef_Tilak.DataClassses
 
             }
 
-            if (this.packagingList.Count() == 2)
+            if (this.PackagingList.Count() == 2)
             {
                 decimal pricePP1Exc = 0M;
                 decimal pricePP2Exc = 0M;
                 decimal pricePP1Inc = 0M;
                 decimal pricePP2Inc = 0M;
 
-                Packaging package1 = this.packagingList[0];
-                Packaging package2 = this.packagingList[1];
+                Packaging package1 = this.PackagingList[0];
+                Packaging package2 = this.PackagingList[1];
 
                 if (package1 != null && package2 != null)
                 {
@@ -191,7 +196,7 @@ namespace Chef_Tilak.DataClassses
 
             }
 
-            if (this.packagingList.Count() == 3)
+            if (this.PackagingList.Count() == 3)
             {
                 decimal pricePP1Exc = 0M;
                 decimal pricePP2Exc = 0M;
@@ -201,9 +206,9 @@ namespace Chef_Tilak.DataClassses
                 decimal pricePP2Inc = 0M;
                 decimal pricePP3Inc = 0M;
 
-                Packaging package1 = this.packagingList[0];
-                Packaging package2 = this.packagingList[1];
-                Packaging package3 = this.packagingList[2];
+                Packaging package1 = this.PackagingList[0];
+                Packaging package2 = this.PackagingList[1];
+                Packaging package3 = this.PackagingList[2];
 
                 if (package1 != null && package2 != null && package3 != null)
                 {

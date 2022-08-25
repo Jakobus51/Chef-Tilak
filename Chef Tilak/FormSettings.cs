@@ -213,28 +213,7 @@ namespace Chef_Tilak
 
         }
 
-        private void barButtonItem2_ItemClick(object sender, DevExpress.XtraBars.ItemClickEventArgs e)
-        {
-            projectData.RecipesCategories = new List<string>()
-            {
-                "Aziatisch", "Brood, gebak etc.", "Chutney Compote", "Confiture, Jam, Gelei", "Desserts", "Dim Sum", "Diverse", "Dressing, Olie",
-                "Groenten Fruit", "Mayonnaise", "Siroop", "Soepen", "Other"
-            };
-            projectData.IngredientSupplier = new List<string>()
-            {
-              "AH", "BHVC", "Flexivers",  "Hanos", "Jumbo", "Makro", "Sligro", "Toko", "Other", "Home made"
-            };
-            projectData.Units = new() { "Kg", "g", "L", "mL", "piece(s)", "other" };
-            projectData.StickerColors = new() { "Green", "White", "None", "Other" };
-
-            projectData.RecipesCategories.Sort();
-            projectData.IngredientSupplier.Sort();
-
-
-            luStores.Refresh();
-            luCategories.Refresh();
-
-        }
+        
 
         private void barButtonItem1_ItemClick(object sender, DevExpress.XtraBars.ItemClickEventArgs e)
         {
@@ -258,6 +237,14 @@ namespace Chef_Tilak
             else
             {
                 ribbonPageGroup2.Visible = false;
+            }
+        }
+
+        private void bbReset_ItemClick(object sender, DevExpress.XtraBars.ItemClickEventArgs e)
+        {
+            foreach (Recipe recipe in projectData.RecipeList)
+            {
+                recipe.PackagingList = recipe.packagingList;
             }
         }
     }

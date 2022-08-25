@@ -19,6 +19,7 @@ namespace Chef_Tilak
         private ProjectSettings projectSettings;
         private ProjectData projectData;
         public List<Ingredient> Ingredients = new();
+        private List<Guid> changedIngredients = new();
 
         public FormIngredients()
         {
@@ -79,6 +80,13 @@ namespace Chef_Tilak
         {
             Ingredient changedIngredient = (Ingredient)gvIngredients.GetRow(gvIngredients.FocusedRowHandle);
 
+            //Add the Guids of changed ingredients to a lsit so you can selectivly update the recipes and products
+            if (!changedIngredients.Contains(changedIngredient.Code))
+            {
+                changedIngredients.Add(changedIngredient.Code);
+            }
+           
+
             if (e.Column.Caption == "Price Exc" || e.Column.Caption == "Tax")
             {
                 changedIngredient.BuyPriceInc = (1 + changedIngredient.Tax) * changedIngredient.BuyPriceExc;
@@ -136,45 +144,44 @@ namespace Chef_Tilak
 
         public void UpdateRecipes()
         {
-            foreach (Recipe recipe in projectData.RecipeList.FindAll(x=>x.IsAlsoIngredient == true))
-            {
-                List<Ingredient> updatedIngredientList = new();
+            //foreach (Recipe recipe in projectData.RecipeList.FindAll(x=>x.IsAlsoIngredient == true))
+            //{
+            //    List<Ingredient> updatedIngredientList = new();
 
-                foreach (Ingredient oldIngredient in recipe.RecipeIngredientList)
-                {
-                    //First replace the old ingredient with the new, if an ingredient has been removed it will also be removed from the recipe
-                    if (projectData.BuyIngredientList.Find(x => x.Code.Equals(oldIngredient.Code)) != null)
-                    {
-                        Ingredient newIngredient = projectData.BuyIngredientList.Find(x => x.Code.Equals(oldIngredient.Code));
-                        Ingredient updatedIngredient = new()
-                        {
-                            Code = oldIngredient.Code,
-                            RecipeComment = oldIngredient.RecipeComment,
-                            RecipeQuantity = oldIngredient.RecipeQuantity,
-                            RecipeUnit = oldIngredient.RecipeUnit,
+            //    foreach (Ingredient oldIngredient in recipe.RecipeIngredientList)
+            //    {
+            //        //First replace the old ingredient with the new, if an ingredient has been removed it will also be removed from the recipe
+            //        if (projectData.BuyIngredientList.Find(x => x.Code.Equals(oldIngredient.Code)) != null)
+            //        {
+            //            Ingredient newIngredient = projectData.BuyIngredientList.Find(x => x.Code.Equals(oldIngredient.Code));
+            //            Ingredient updatedIngredient = new()
+            //            {
+            //                Code = oldIngredient.Code,
+            //                RecipeComment = oldIngredient.RecipeComment,
+            //                RecipeQuantity = oldIngredient.RecipeQuantity,
+            //                RecipeUnit = oldIngredient.RecipeUnit,
 
-                            Name = newIngredient.Name,
-                            Store = newIngredient.Store,
-                            Tax = newIngredient.Tax,
-                            BuyPriceInc = newIngredient.BuyPriceInc,
-                            BuyPriceExc = newIngredient.BuyPriceExc,
-                            BuyQuantity = newIngredient.BuyQuantity,
-                            BuyUnit = newIngredient.BuyUnit,
-                            PricePerUnitExc = newIngredient.PricePerUnitExc,
-                            PricePerUnitInc = newIngredient.PricePerUnitInc,
-                        };
-                        updatedIngredient.updatePriceRecipe();
-                        updatedIngredientList.Add(updatedIngredient);
-                    }
+            //                Name = newIngredient.Name,
+            //                Store = newIngredient.Store,
+            //                Tax = newIngredient.Tax,
+            //                BuyPriceInc = newIngredient.BuyPriceInc,
+            //                BuyPriceExc = newIngredient.BuyPriceExc,
+            //                BuyQuantity = newIngredient.BuyQuantity,
+            //                BuyUnit = newIngredient.BuyUnit,
+            //                PricePerUnitExc = newIngredient.PricePerUnitExc,
+            //                PricePerUnitInc = newIngredient.PricePerUnitInc,
+            //            };
+            //            updatedIngredient.updatePriceRecipe();
+            //            updatedIngredientList.Add(updatedIngredient);
+            //        }
 
-                }
-                recipe.RecipeIngredientList = updatedIngredientList;
+            //    }
+            //    recipe.RecipeIngredientList = updatedIngredientList;
 
-                recipe.updatePricePerPackage(recipe.packagingList.Count());
-                recipe.calculateTotalCostExc();
-                recipe.calculateTotalCostInc();
-
-            }
+            //    recipe.updatePricePerPackage(recipe.PackagingList.Count());
+            //    recipe.calculateTotalCostExc();
+            //    recipe.calculateTotalCostInc();
+            //}
 
             foreach (Recipe recipe in projectData.RecipeList.FindAll(x => x.IsAlsoIngredient == false))
             {
@@ -210,38 +217,35 @@ namespace Chef_Tilak
                 }
                 recipe.RecipeIngredientList = updatedIngredientList;
 
-                recipe.updatePricePerPackage(recipe.packagingList.Count());
+                recipe.updatePricePerPackage(recipe.PackagingList.Count());
                 recipe.calculateTotalCostExc();
                 recipe.calculateTotalCostInc();
 
             }
         }
 
+        /// <summary>
+        /// Updates all products that contain changed ingredients, Only works if the recipes get updated first
+        /// </summary>
         public void UpdateProducts()
         {
             foreach (Recipe recipe in projectData.RecipeList)
             {
-                foreach (Packaging packaging in recipe.packagingList)
+                //Checks which recipes contain the ingredients that have changed
+                List<Guid> ingredientsGuids = recipe.RecipeIngredientList.Select(x => x.Code).ToList();
+                IEnumerable<Guid> both = ingredientsGuids.Intersect(changedIngredients);
+                if (both.Count() > 0)
                 {
-                    SellProduct product = projectData.ProductList.Find(x => x.RecipeCode.Equals(recipe.Code) && x.PackagingCode.Equals(packaging.Code));
-                    //If the combination of this recipe and packaging already exist update it
-                    if (product != null)
+                    foreach (Packaging packaging in recipe.PackagingList)
                     {
-                        product.Name = recipe.RecipeName + " (" + packaging.Name + ")";
-
-                        product.ProductionCostExc = packaging.ProductionPriceExc;
-                        product.ProductionCostInc = packaging.ProductionPriceInc;
-
-                        if (product.SellPriceInc != 0)
-                        {
-                            product.MarginInc = (product.SellPriceInc - product.ProductionCostExc) / product.SellPriceInc;
-                            product.ProfitInc = product.SellPriceInc - product.ProductionCostExc;
+                        SellProduct product = projectData.ProductList.Find(x => x.RecipeCode.Equals(recipe.Code) && x.PackagingCode.Equals(packaging.Code));
+                        //If the combination of this recipe and packaging already exist update it
+                        if (product != null)
+                        {   
+                            product.UpdateProduct(projectData);
                         }
-
-
-
                     }
-                }
+                }               
             }
         }
 

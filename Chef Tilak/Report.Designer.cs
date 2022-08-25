@@ -732,7 +732,7 @@ namespace Chef_Tilak
             // 
             this.drPackagings2.Bands.AddRange(new DevExpress.XtraReports.UI.Band[] {
             this.Detail2});
-            this.drPackagings2.DataMember = "packagingList";
+            this.drPackagings2.DataMember = "PackagingList";
             this.drPackagings2.DataSource = this.objectDataSource2;
             this.drPackagings2.Level = 3;
             this.drPackagings2.Name = "drPackagings2";

@@ -18,6 +18,8 @@ namespace Chef_Tilak
         private ProjectSettings projectSettings;
         private ProjectData projectData;
         public List<Packaging> Packagings = new();
+        private List<Guid> changedPackagings = new();
+
 
         public FormPackagings()
         {
@@ -77,6 +79,11 @@ namespace Chef_Tilak
         {
             Packaging changedPackaging = (Packaging)gvPackaging.GetRow(gvPackaging.FocusedRowHandle);
 
+            //Add the Guids of changed packagings to a lsit so you can selectivly update the recipes and products
+            if (!changedPackagings.Contains(changedPackaging.Code))
+            {
+                changedPackagings.Add(changedPackaging.Code);
+            }
             if (e.Column.Caption == "Price Exc" || e.Column.Caption == "Tax")
             {
                 changedPackaging.PriceInc = (1 + changedPackaging.Tax) * changedPackaging.PriceExc;
@@ -105,7 +112,7 @@ namespace Chef_Tilak
         }
 
         public void Save()
-        {          
+        {         
            
             projectData.PackagingList = Packagings;
             UpdateRecipes();
@@ -129,7 +136,7 @@ namespace Chef_Tilak
                 List<Packaging> updatedPackagingList = new();   
 
                 //Now do the same with the packagings
-                foreach (Packaging oldPackaging in recipe.packagingList)
+                foreach (Packaging oldPackaging in recipe.PackagingList)
                 {
                     //First replace the old Packaging with the new, if an Packaging has been removed it will also be removed from the recipe
                     if (projectData.PackagingList.Find(x => x.Code.Equals(oldPackaging.Code)) != null)
@@ -153,8 +160,8 @@ namespace Chef_Tilak
                         updatedPackagingList.Add(updatedPackaging);
                     }
                 }
-                recipe.packagingList = updatedPackagingList;
-                recipe.updatePricePerPackage(recipe.packagingList.Count());
+                recipe.PackagingList = updatedPackagingList;
+                recipe.updatePricePerPackage(recipe.PackagingList.Count());
                 recipe.calculateTotalCostExc();
                 recipe.calculateTotalCostInc();
 
@@ -165,24 +172,18 @@ namespace Chef_Tilak
         {
             foreach (Recipe recipe in projectData.RecipeList)
             {
-                foreach (Packaging packaging in recipe.packagingList)
+                foreach (Packaging packaging in recipe.PackagingList)
                 {
-                    SellProduct product = projectData.ProductList.Find(x => x.RecipeCode.Equals(recipe.Code) && x.PackagingCode.Equals(packaging.Code));
-                    //If the combination of this recipe and packaging already exist update it
-                    if (product != null)
+                    if (changedPackagings.Contains(packaging.Code))
                     {
-                        product.Name = recipe.RecipeName + " (" + packaging.Name + ")";
-                        product.PackagingName = packaging.Name;
-                        product.ProductionCostExc = packaging.ProductionPriceExc;
-                        product.ProductionCostInc = packaging.ProductionPriceInc;
-
-                        if (product.SellPriceInc != 0)
+                        SellProduct product = projectData.ProductList.Find(x => x.RecipeCode.Equals(recipe.Code) && x.PackagingCode.Equals(packaging.Code));
+                        //If the combination of this recipe and packaging already exist update it
+                        if (product != null)
                         {
-                            product.MarginInc = (product.SellPriceInc - product.ProductionCostExc) / product.SellPriceInc;
-                            product.ProfitInc = product.SellPriceInc - product.ProductionCostExc;
+                            product.UpdateProduct(projectData);
                         }
-
                     }
+                    
                 }
             }
         }

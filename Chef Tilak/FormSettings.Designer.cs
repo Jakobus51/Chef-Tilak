@@ -46,8 +46,7 @@
             this.barButtonItem3 = new DevExpress.XtraBars.BarButtonItem();
             this.barButtonItem4 = new DevExpress.XtraBars.BarButtonItem();
             this.barButtonItem1 = new DevExpress.XtraBars.BarButtonItem();
-            this.barButtonItem2 = new DevExpress.XtraBars.BarButtonItem();
-            this.bbResaveAllRecipes = new DevExpress.XtraBars.BarButtonItem();
+            this.bbReset = new DevExpress.XtraBars.BarButtonItem();
             this.ribbonPage1 = new DevExpress.XtraBars.Ribbon.RibbonPage();
             this.ribbonPageGroup2 = new DevExpress.XtraBars.Ribbon.RibbonPageGroup();
             this.cpeRecipeHeaderColour = new DevExpress.XtraEditors.ColorPickEdit();
@@ -235,8 +234,7 @@
             this.barButtonItem3,
             this.barButtonItem4,
             this.barButtonItem1,
-            this.barButtonItem2,
-            this.bbResaveAllRecipes});
+            this.bbReset});
             this.ribbonControl2.Location = new System.Drawing.Point(0, 0);
             this.ribbonControl2.MaxItemId = 21;
             this.ribbonControl2.MdiMergeStyle = DevExpress.XtraBars.Ribbon.RibbonMdiMergeStyle.Always;
@@ -341,20 +339,13 @@
             this.barButtonItem1.Name = "barButtonItem1";
             this.barButtonItem1.ItemClick += new DevExpress.XtraBars.ItemClickEventHandler(this.barButtonItem1_ItemClick);
             // 
-            // barButtonItem2
+            // bbReset
             // 
-            this.barButtonItem2.Caption = "Reset Categoreis en Stores";
-            this.barButtonItem2.Id = 19;
-            this.barButtonItem2.ImageOptions.SvgImage = ((DevExpress.Utils.Svg.SvgImage)(resources.GetObject("barButtonItem2.ImageOptions.SvgImage")));
-            this.barButtonItem2.Name = "barButtonItem2";
-            this.barButtonItem2.ItemClick += new DevExpress.XtraBars.ItemClickEventHandler(this.barButtonItem2_ItemClick);
-            // 
-            // bbResaveAllRecipes
-            // 
-            this.bbResaveAllRecipes.Caption = "Resave all recipes";
-            this.bbResaveAllRecipes.Id = 20;
-            this.bbResaveAllRecipes.ImageOptions.SvgImage = ((DevExpress.Utils.Svg.SvgImage)(resources.GetObject("bbResaveAllRecipes.ImageOptions.SvgImage")));
-            this.bbResaveAllRecipes.Name = "bbResaveAllRecipes";
+            this.bbReset.Caption = "Reset";
+            this.bbReset.Id = 19;
+            this.bbReset.ImageOptions.SvgImage = ((DevExpress.Utils.Svg.SvgImage)(resources.GetObject("barButtonItem2.ImageOptions.SvgImage")));
+            this.bbReset.Name = "bbReset";
+            this.bbReset.ItemClick += new DevExpress.XtraBars.ItemClickEventHandler(this.bbReset_ItemClick);
             // 
             // ribbonPage1
             // 
@@ -366,8 +357,7 @@
             // ribbonPageGroup2
             // 
             this.ribbonPageGroup2.ItemLinks.Add(this.barButtonItem1);
-            this.ribbonPageGroup2.ItemLinks.Add(this.barButtonItem2);
-            this.ribbonPageGroup2.ItemLinks.Add(this.bbResaveAllRecipes);
+            this.ribbonPageGroup2.ItemLinks.Add(this.bbReset);
             this.ribbonPageGroup2.Name = "ribbonPageGroup2";
             this.ribbonPageGroup2.Text = "ribbonPageGroup2";
             this.ribbonPageGroup2.Visible = false;
@@ -1070,7 +1060,7 @@
         private DevExpress.XtraLayout.LayoutControlItem layoutControlItem7;
         private DevExpress.XtraLayout.LayoutControlItem layoutControlItem8;
         private DevExpress.XtraLayout.EmptySpaceItem emptySpaceItem2;
-        private DevExpress.XtraBars.BarButtonItem barButtonItem2;
+        private DevExpress.XtraBars.BarButtonItem bbReset;
         private DevExpress.XtraEditors.LabelControl labelControl1;
         private DevExpress.XtraLayout.LayoutControlGroup layoutControlGroup4;
         private DevExpress.XtraLayout.LayoutControlItem layoutControlItem13;
@@ -1101,7 +1091,6 @@
         private DevExpress.XtraLayout.LayoutControlItem layoutControlItem24;
         private DevExpress.XtraEditors.LabelControl labelControl3;
         private DevExpress.XtraEditors.ToggleSwitch tsDeveloperMode;
-        private DevExpress.XtraBars.BarButtonItem bbResaveAllRecipes;
         private DevExpress.XtraLayout.LayoutControlItem layoutControlItem26;
         private DevExpress.XtraLayout.LayoutControlItem layoutControlItem25;
     }

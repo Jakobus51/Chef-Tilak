@@ -52,8 +52,6 @@
             this.luProductCategory = new DevExpress.XtraEditors.Repository.RepositoryItemLookUpEdit();
             this.gcProductionCostExc = new DevExpress.XtraGrid.Columns.GridColumn();
             this.seProductionCostExc = new DevExpress.XtraEditors.Repository.RepositoryItemSpinEdit();
-            this.gcProductionCostInc = new DevExpress.XtraGrid.Columns.GridColumn();
-            this.seProductionPriceInc = new DevExpress.XtraEditors.Repository.RepositoryItemSpinEdit();
             this.gcSellPriceInc = new DevExpress.XtraGrid.Columns.GridColumn();
             this.seSellPriceInc = new DevExpress.XtraEditors.Repository.RepositoryItemSpinEdit();
             this.gcIsRecipeProduct = new DevExpress.XtraGrid.Columns.GridColumn();
@@ -77,6 +75,7 @@
             this.ribbonPageGroup1 = new DevExpress.XtraBars.Ribbon.RibbonPageGroup();
             this.seSellPriceExc = new DevExpress.XtraEditors.Repository.RepositoryItemSpinEdit();
             this.seMarginExc = new DevExpress.XtraEditors.Repository.RepositoryItemSpinEdit();
+            this.seProductionPriceInc = new DevExpress.XtraEditors.Repository.RepositoryItemSpinEdit();
             this.Root = new DevExpress.XtraLayout.LayoutControlGroup();
             this.layoutControlItem1 = new DevExpress.XtraLayout.LayoutControlItem();
             this.behaviorManager1 = new DevExpress.Utils.Behaviors.BehaviorManager(this.components);
@@ -90,12 +89,12 @@
             ((System.ComponentModel.ISupportInitialize)(this.gvProducts)).BeginInit();
             ((System.ComponentModel.ISupportInitialize)(this.luProductCategory)).BeginInit();
             ((System.ComponentModel.ISupportInitialize)(this.seProductionCostExc)).BeginInit();
-            ((System.ComponentModel.ISupportInitialize)(this.seProductionPriceInc)).BeginInit();
             ((System.ComponentModel.ISupportInitialize)(this.seSellPriceInc)).BeginInit();
             ((System.ComponentModel.ISupportInitialize)(this.repositoryItemCheckEdit1)).BeginInit();
             ((System.ComponentModel.ISupportInitialize)(this.ribbonControl2)).BeginInit();
             ((System.ComponentModel.ISupportInitialize)(this.seSellPriceExc)).BeginInit();
             ((System.ComponentModel.ISupportInitialize)(this.seMarginExc)).BeginInit();
+            ((System.ComponentModel.ISupportInitialize)(this.seProductionPriceInc)).BeginInit();
             ((System.ComponentModel.ISupportInitialize)(this.Root)).BeginInit();
             ((System.ComponentModel.ISupportInitialize)(this.layoutControlItem1)).BeginInit();
             ((System.ComponentModel.ISupportInitialize)(this.behaviorManager1)).BeginInit();
@@ -106,12 +105,12 @@
             this.gcMarginInc.Caption = "Margin (Inc)";
             this.gcMarginInc.ColumnEdit = this.seMarginInc;
             this.gcMarginInc.FieldName = "MarginInc";
-            this.gcMarginInc.MaxWidth = 135;
-            this.gcMarginInc.MinWidth = 25;
+            this.gcMarginInc.MaxWidth = 80;
+            this.gcMarginInc.MinWidth = 80;
             this.gcMarginInc.Name = "gcMarginInc";
             this.gcMarginInc.Visible = true;
-            this.gcMarginInc.VisibleIndex = 6;
-            this.gcMarginInc.Width = 78;
+            this.gcMarginInc.VisibleIndex = 5;
+            this.gcMarginInc.Width = 80;
             // 
             // seMarginInc
             // 
@@ -131,11 +130,12 @@
             this.gvProfitInc.Caption = "Profit (Inc)";
             this.gvProfitInc.ColumnEdit = this.seProfitInc;
             this.gvProfitInc.FieldName = "ProfitInc";
-            this.gvProfitInc.MinWidth = 25;
+            this.gvProfitInc.MaxWidth = 180;
+            this.gvProfitInc.MinWidth = 180;
             this.gvProfitInc.Name = "gvProfitInc";
             this.gvProfitInc.Visible = true;
-            this.gvProfitInc.VisibleIndex = 7;
-            this.gvProfitInc.Width = 100;
+            this.gvProfitInc.VisibleIndex = 6;
+            this.gvProfitInc.Width = 180;
             // 
             // seProfitInc
             // 
@@ -187,7 +187,6 @@
             this.gcPackagingName,
             this.gcGategory,
             this.gcProductionCostExc,
-            this.gcProductionCostInc,
             this.gcSellPriceInc,
             this.gcMarginInc,
             this.gcIsRecipeProduct,
@@ -235,6 +234,8 @@
             this.gvProducts.FormatRules.Add(gridFormatRule4);
             this.gvProducts.GridControl = this.gcProducts;
             this.gvProducts.Name = "gvProducts";
+            this.gvProducts.OptionsDetail.EnableMasterViewMode = false;
+            this.gvProducts.OptionsDetail.ShowDetailTabs = false;
             this.gvProducts.OptionsFind.AlwaysVisible = true;
             this.gvProducts.OptionsFind.FindDelay = 250;
             this.gvProducts.OptionsSelection.EnableAppearanceFocusedRow = false;
@@ -249,7 +250,7 @@
             this.gcName.Name = "gcName";
             this.gcName.Visible = true;
             this.gcName.VisibleIndex = 0;
-            this.gcName.Width = 257;
+            this.gcName.Width = 317;
             // 
             // gcPackagingName
             // 
@@ -259,19 +260,19 @@
             this.gcPackagingName.Name = "gcPackagingName";
             this.gcPackagingName.Visible = true;
             this.gcPackagingName.VisibleIndex = 1;
-            this.gcPackagingName.Width = 92;
+            this.gcPackagingName.Width = 113;
             // 
             // gcGategory
             // 
             this.gcGategory.Caption = "Category";
             this.gcGategory.ColumnEdit = this.luProductCategory;
             this.gcGategory.FieldName = "Category";
-            this.gcGategory.MaxWidth = 200;
-            this.gcGategory.MinWidth = 25;
+            this.gcGategory.MaxWidth = 180;
+            this.gcGategory.MinWidth = 180;
             this.gcGategory.Name = "gcGategory";
             this.gcGategory.Visible = true;
             this.gcGategory.VisibleIndex = 2;
-            this.gcGategory.Width = 147;
+            this.gcGategory.Width = 180;
             // 
             // luProductCategory
             // 
@@ -286,11 +287,11 @@
             this.gcProductionCostExc.ColumnEdit = this.seProductionCostExc;
             this.gcProductionCostExc.FieldName = "ProductionCostExc";
             this.gcProductionCostExc.MaxWidth = 135;
-            this.gcProductionCostExc.MinWidth = 25;
+            this.gcProductionCostExc.MinWidth = 135;
             this.gcProductionCostExc.Name = "gcProductionCostExc";
             this.gcProductionCostExc.Visible = true;
             this.gcProductionCostExc.VisibleIndex = 3;
-            this.gcProductionCostExc.Width = 122;
+            this.gcProductionCostExc.Width = 135;
             // 
             // seProductionCostExc
             // 
@@ -301,38 +302,17 @@
             this.seProductionCostExc.Name = "seProductionCostExc";
             this.seProductionCostExc.UseMaskAsDisplayFormat = true;
             // 
-            // gcProductionCostInc
-            // 
-            this.gcProductionCostInc.Caption = "Production Cost (Inc)";
-            this.gcProductionCostInc.ColumnEdit = this.seProductionPriceInc;
-            this.gcProductionCostInc.FieldName = "ProductionCostInc";
-            this.gcProductionCostInc.MaxWidth = 135;
-            this.gcProductionCostInc.MinWidth = 25;
-            this.gcProductionCostInc.Name = "gcProductionCostInc";
-            this.gcProductionCostInc.Visible = true;
-            this.gcProductionCostInc.VisibleIndex = 4;
-            this.gcProductionCostInc.Width = 122;
-            // 
-            // seProductionPriceInc
-            // 
-            this.seProductionPriceInc.AutoHeight = false;
-            this.seProductionPriceInc.Buttons.AddRange(new DevExpress.XtraEditors.Controls.EditorButton[] {
-            new DevExpress.XtraEditors.Controls.EditorButton(DevExpress.XtraEditors.Controls.ButtonPredefines.Combo)});
-            this.seProductionPriceInc.MaskSettings.Set("mask", "c");
-            this.seProductionPriceInc.Name = "seProductionPriceInc";
-            this.seProductionPriceInc.UseMaskAsDisplayFormat = true;
-            // 
             // gcSellPriceInc
             // 
             this.gcSellPriceInc.Caption = "Sell Price (Inc)";
             this.gcSellPriceInc.ColumnEdit = this.seSellPriceInc;
             this.gcSellPriceInc.FieldName = "SellPriceInc";
-            this.gcSellPriceInc.MaxWidth = 135;
-            this.gcSellPriceInc.MinWidth = 25;
+            this.gcSellPriceInc.MaxWidth = 95;
+            this.gcSellPriceInc.MinWidth = 95;
             this.gcSellPriceInc.Name = "gcSellPriceInc";
             this.gcSellPriceInc.Visible = true;
-            this.gcSellPriceInc.VisibleIndex = 5;
-            this.gcSellPriceInc.Width = 78;
+            this.gcSellPriceInc.VisibleIndex = 4;
+            this.gcSellPriceInc.Width = 95;
             // 
             // seSellPriceInc
             // 
@@ -498,7 +478,6 @@
             this.bbDetailedOverview.Id = 20;
             this.bbDetailedOverview.ImageOptions.SvgImage = ((DevExpress.Utils.Svg.SvgImage)(resources.GetObject("bbDetailedOverview.ImageOptions.SvgImage")));
             this.bbDetailedOverview.Name = "bbDetailedOverview";
-            this.bbDetailedOverview.Visibility = DevExpress.XtraBars.BarItemVisibility.Never;
             this.bbDetailedOverview.ItemClick += new DevExpress.XtraBars.ItemClickEventHandler(this.bbDetailedOverview_ItemClick);
             // 
             // ribbonPage1
@@ -529,6 +508,15 @@
             this.seMarginExc.Buttons.AddRange(new DevExpress.XtraEditors.Controls.EditorButton[] {
             new DevExpress.XtraEditors.Controls.EditorButton(DevExpress.XtraEditors.Controls.ButtonPredefines.Combo)});
             this.seMarginExc.Name = "seMarginExc";
+            // 
+            // seProductionPriceInc
+            // 
+            this.seProductionPriceInc.AutoHeight = false;
+            this.seProductionPriceInc.Buttons.AddRange(new DevExpress.XtraEditors.Controls.EditorButton[] {
+            new DevExpress.XtraEditors.Controls.EditorButton(DevExpress.XtraEditors.Controls.ButtonPredefines.Combo)});
+            this.seProductionPriceInc.MaskSettings.Set("mask", "c");
+            this.seProductionPriceInc.Name = "seProductionPriceInc";
+            this.seProductionPriceInc.UseMaskAsDisplayFormat = true;
             // 
             // Root
             // 
@@ -576,12 +564,12 @@
             ((System.ComponentModel.ISupportInitialize)(this.gvProducts)).EndInit();
             ((System.ComponentModel.ISupportInitialize)(this.luProductCategory)).EndInit();
             ((System.ComponentModel.ISupportInitialize)(this.seProductionCostExc)).EndInit();
-            ((System.ComponentModel.ISupportInitialize)(this.seProductionPriceInc)).EndInit();
             ((System.ComponentModel.ISupportInitialize)(this.seSellPriceInc)).EndInit();
             ((System.ComponentModel.ISupportInitialize)(this.repositoryItemCheckEdit1)).EndInit();
             ((System.ComponentModel.ISupportInitialize)(this.ribbonControl2)).EndInit();
             ((System.ComponentModel.ISupportInitialize)(this.seSellPriceExc)).EndInit();
             ((System.ComponentModel.ISupportInitialize)(this.seMarginExc)).EndInit();
+            ((System.ComponentModel.ISupportInitialize)(this.seProductionPriceInc)).EndInit();
             ((System.ComponentModel.ISupportInitialize)(this.Root)).EndInit();
             ((System.ComponentModel.ISupportInitialize)(this.layoutControlItem1)).EndInit();
             ((System.ComponentModel.ISupportInitialize)(this.behaviorManager1)).EndInit();
@@ -618,7 +606,6 @@
         private DevExpress.XtraGrid.Columns.GridColumn gcName;
         private DevExpress.XtraGrid.Columns.GridColumn gcGategory;
         private DevExpress.XtraGrid.Columns.GridColumn gcProductionCostExc;
-        private DevExpress.XtraGrid.Columns.GridColumn gcProductionCostInc;
         private DevExpress.XtraGrid.Columns.GridColumn gcSellPriceInc;
         private DevExpress.XtraEditors.Repository.RepositoryItemSpinEdit seSellPriceExc;
         private DevExpress.XtraEditors.Repository.RepositoryItemSpinEdit seSellPriceInc;

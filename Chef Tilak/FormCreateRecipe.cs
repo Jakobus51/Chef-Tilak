@@ -70,27 +70,27 @@ namespace Chef_Tilak
             rgRecipeUnit.EditValue = recipe.RecipeUnit;
             ceAddToIngredients.EditValue = recipe.IsAlsoIngredient;
 
-            rgNumberPackagings.EditValue = recipe.packagingList.Count();
-            if (recipe.packagingList.Count() > 0)
+            rgNumberPackagings.EditValue = recipe.PackagingList.Count();
+            if (recipe.PackagingList.Count() > 0)
             {
                 //If the quantity is changed, the price exc and inc also get updated
-                luPackaging1.EditValue = recipe.packagingList[0].Name;
-                seQuantityPP1.EditValue = recipe.packagingList[0].RecipeQuantity;
-                seNumberPackagings1.EditValue = recipe.packagingList[0].NumberOfPackagings;
+                luPackaging1.EditValue = recipe.PackagingList[0].Name;
+                seQuantityPP1.EditValue = recipe.PackagingList[0].RecipeQuantity;
+                seNumberPackagings1.EditValue = recipe.PackagingList[0].NumberOfPackagings;
                 lcgPackaging1.Visibility = LayoutVisibility.Always;
             }
-            if (recipe.packagingList.Count() > 1)
+            if (recipe.PackagingList.Count() > 1)
             {
-                luPackaging2.EditValue = recipe.packagingList[1].Name;
-                seQuantityPP2.EditValue = recipe.packagingList[1].RecipeQuantity;
-                seNumberPackagings2.EditValue = recipe.packagingList[1].NumberOfPackagings;
+                luPackaging2.EditValue = recipe.PackagingList[1].Name;
+                seQuantityPP2.EditValue = recipe.PackagingList[1].RecipeQuantity;
+                seNumberPackagings2.EditValue = recipe.PackagingList[1].NumberOfPackagings;
                 lcgPackaging2.Visibility = LayoutVisibility.Always;
             }
-            if (recipe.packagingList.Count() > 2)
+            if (recipe.PackagingList.Count() > 2)
             {
-                luPackaging3.EditValue = recipe.packagingList[2].Name;
-                seQuantityPP3.EditValue = recipe.packagingList[2].RecipeQuantity;
-                seNumberPackagings3.EditValue = recipe.packagingList[2].NumberOfPackagings;
+                luPackaging3.EditValue = recipe.PackagingList[2].Name;
+                seQuantityPP3.EditValue = recipe.PackagingList[2].RecipeQuantity;
+                seNumberPackagings3.EditValue = recipe.PackagingList[2].NumberOfPackagings;
                 lcgPackaging3.Visibility = LayoutVisibility.Always;
             }
 
@@ -517,8 +517,7 @@ namespace Chef_Tilak
             else
             {
                 XtraMessageBox.Show(errorMessage);
-            }
-            
+            }            
         }
 
 
@@ -616,11 +615,11 @@ namespace Chef_Tilak
 
         public void savePackagings()
         {
-            recipe.packagingList.Clear();            
+            recipe.PackagingList.Clear();            
             if ((int)rgNumberPackagings.EditValue > 0 && seNumberPackagings1.Value != 0)
             {
                 Packaging package1 = projectData.PackagingList.Find(x => x.Name.Equals(luPackaging1.EditValue));
-                recipe.packagingList.Add(new Packaging()
+                recipe.PackagingList.Add(new Packaging()
                 {
                     NumberOfPackagings = seNumberPackagings1.Value,
                     RecipeQuantity = seQuantityPP1.Value,
@@ -640,7 +639,7 @@ namespace Chef_Tilak
             if ((int)rgNumberPackagings.EditValue > 1 && seNumberPackagings2.Value != 0)
             {
                 Packaging package2 = projectData.PackagingList.Find(x => x.Name.Equals(luPackaging2.EditValue));
-                recipe.packagingList.Add(new Packaging()
+                recipe.PackagingList.Add(new Packaging()
                 {
                     NumberOfPackagings = seNumberPackagings2.Value,
                     RecipeQuantity = seQuantityPP2.Value,
@@ -660,7 +659,7 @@ namespace Chef_Tilak
             if ((int)rgNumberPackagings.EditValue > 2 && seNumberPackagings3.Value != 0)
             {
                 Packaging package3 = projectData.PackagingList.Find(x => x.Name.Equals(luPackaging3.EditValue));
-                recipe.packagingList.Add(new Packaging()
+                recipe.PackagingList.Add(new Packaging()
                 {
                     NumberOfPackagings = seNumberPackagings3.Value,
                     RecipeQuantity = seQuantityPP3.Value,
@@ -681,22 +680,15 @@ namespace Chef_Tilak
         public void saveProducts()
         {
 
-            foreach (Packaging packaging in recipe.packagingList)
+            foreach (Packaging packaging in recipe.PackagingList)
             {
                 SellProduct product = projectData.ProductList.Find(x => x.RecipeCode.Equals(recipe.Code) && x.PackagingCode.Equals(packaging.Code));
                 //If the combination of this recipe and packaging already exist update it
                 if (product != null)
                 {
-                    product.Name = recipe.RecipeName + "\r\n(" + packaging.Name + ")";
-                    product.RecipeName = recipe.RecipeName;
-                    product.PackagingName = packaging.Name;
-                    product.IsRecipeProduct = true;
-                    product.Category = recipe.Category;
-                    product.Volume = packaging.RecipeQuantity;
-                    product.ProductionCostExc = packaging.ProductionPriceExc;
-                    product.ProductionCostInc = packaging.ProductionPriceInc;
-                    product.ProductionCostBreakdown = CalculateProductionCostBreakdown(product);
+                    product.UpdateProduct(projectData);
                 }
+
                 //Otheriwse create a new one
                 else
                 {
@@ -705,68 +697,16 @@ namespace Chef_Tilak
                         ProductCode = new Guid(),
                         RecipeCode = recipe.Code,
                         PackagingCode = packaging.Code,
-                        IsRecipeProduct = true,
-                        Name = recipe.RecipeName + "\r\n(" + packaging.Name + ")",
-                        RecipeName = recipe.RecipeName,
-                        PackagingName = packaging.Name,
-                        Category = recipe.Category,
-                        Volume = packaging.RecipeQuantity,
-                        ProductionCostExc = packaging.ProductionPriceExc,
-                        ProductionCostInc = packaging.ProductionPriceInc,                        
                         DataPointProfit = "Profit",
-                        DataPointMargin = "Margin"
-                    };
-                    product.ProductionCostBreakdown = CalculateProductionCostBreakdown(product);
+                        DataPointMargin = "Margin",
 
+                    };
+                    product.UpdateProduct(projectData);
                     projectData.ProductList.Add(product);
                 }
             }
         }
-
-        public List<ProductDataPoint> CalculateProductionCostBreakdown(SellProduct product)
-        {
-            List<ProductDataPoint> costList = new List<ProductDataPoint>();
-
-            //Packaging itself
-            Packaging packaging = projectData.PackagingList.Find(x => x.Code.Equals(product.PackagingCode));
-            costList.Add(new()
-            {
-                Name = packaging.Name,
-                Code = packaging.Code,
-                Category = "Packaging",
-                Cost = packaging.PriceExc,
-            });
-
-            //Packaging additional 
-            if (packaging.AdditionalCostExc != 0)
-            {
-                costList.Add(new()
-                {
-                    Name = "Additional Packaging Cost",
-                    Code = packaging.Code,
-                    Category = "Packaging Additional",
-                    Cost = packaging.AdditionalCostExc,
-                });
-            }           
-
-            //Ingredient Cost 
-            foreach (Ingredient ingredient in recipe.RecipeIngredientList.FindAll(x => x.Code != Guid.Empty))
-            {
-                decimal percentage = ingredient.RecipePriceExc / recipe.TotalIngredientCostExc;
-                //Just the toal cost minus everything that is not an ingredient cost
-                decimal productIngredientCost = product.ProductionCostExc - packaging.PriceExc - packaging.AdditionalCostExc;
-                costList.Add(new()
-                {
-                    Name = ingredient.Name,
-                    Code = ingredient.Code,
-                    Category = "Ingredients",
-                    Cost = productIngredientCost * percentage,
-                });
-            }
-
-            return costList;
-
-        }
+        
 
         public void SaveToIngredients()
         {

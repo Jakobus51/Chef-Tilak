@@ -27,7 +27,7 @@ namespace Chef_Tilak
             xlVolumeProduced.Text = recipe.TotalVolume.ToString("N0") + " " + recipe.RecipeUnit;
            
 
-            if (recipe.packagingList.Count == 0)
+            if (recipe.PackagingList.Count == 0)
             {
                 drPackagings1.Visible = false;
                 drPackagings2.Visible = false;
