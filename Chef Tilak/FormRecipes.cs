@@ -11,6 +11,8 @@ using Chef_Tilak.DataClassses;
 using DevExpress.XtraReports;
 using DevExpress.XtraSplashScreen;
 using DevExpress.XtraReports.UI;
+using System.IO;
+using System.Xml.Serialization;
 
 namespace Chef_Tilak
 {
@@ -75,6 +77,61 @@ namespace Chef_Tilak
             }
         }
 
+        private void bbCopyRecipe_ItemClick(object sender, DevExpress.XtraBars.ItemClickEventArgs e)
+        {
+            Recipe focusedRecipe = (Recipe)gvRecipes.GetRow(gvRecipes.FocusedRowHandle);
+            if (focusedRecipe != null)
+            {
+                //Add a warning if you want to start a new recipe while another one is still open
+                if (projectData.CurrentRecipe != null)
+                {
+                    DialogResult dialogResult = MessageBox.Show("There is already another recipe open: " + projectData.CurrentRecipe.RecipeName + ".\r\nCopying " + focusedRecipe.RecipeName + " will delete all the changes of " + projectData.CurrentRecipe.RecipeName + ", are you sure you want to copy " + focusedRecipe.RecipeName + "?", "Warning", MessageBoxButtons.YesNo);
+                    if (dialogResult == DialogResult.Yes)
+                    {
+                        FormMain parentForm = (FormMain)this.ParentForm;
+                        if (!projectSettings.formType.Equals("EditRecipe") && parentForm.ExitForm(projectSettings.formType))
+                        {
+                            projectSettings.formType = "EditRecipe";
+                            Recipe copiedRecipe = CreateDeepCopy(focusedRecipe);
+                            copiedRecipe.Code = Guid.NewGuid();
+                            copiedRecipe.RecipeName = focusedRecipe.RecipeName + "- copy";
+                            parentForm.LoadForm("EditRecipe", copiedRecipe);
+                        }
+                    }
+
+                }
+                else
+                {
+                    FormMain parentForm = (FormMain)this.ParentForm;
+                    if (!projectSettings.formType.Equals("EditRecipe") && parentForm.ExitForm(projectSettings.formType))
+                    {
+                        projectSettings.formType = "EditRecipe";
+                        Recipe copiedRecipe = CreateDeepCopy(focusedRecipe);
+                        copiedRecipe.Code = Guid.NewGuid();
+                        copiedRecipe.RecipeName = focusedRecipe.RecipeName + "- copy";
+
+                        parentForm.LoadForm("EditRecipe", copiedRecipe);
+                    }
+                }
+            }
+
+            else
+            {
+                MessageBox.Show("Please select a recipe", "warning");
+            }
+        }
+
+        public static Recipe CreateDeepCopy(Recipe obj)
+        {
+            using (var ms = new MemoryStream())
+            {
+                XmlSerializer serializer = new XmlSerializer(obj.GetType());
+                serializer.Serialize(ms, obj);
+                ms.Seek(0, SeekOrigin.Begin);
+                return (Recipe)serializer.Deserialize(ms);
+            }
+        }
+
         private void bbRemoveRecipe_ItemClick(object sender, DevExpress.XtraBars.ItemClickEventArgs e)
         {
             Recipe focusedRecipe = (Recipe)gvRecipes.GetRow(gvRecipes.FocusedRowHandle);
@@ -133,5 +190,8 @@ namespace Chef_Tilak
             }
         }
 
+
+
+       
     }
 }

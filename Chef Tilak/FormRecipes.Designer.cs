@@ -51,6 +51,7 @@
             this.Recipes = new DevExpress.XtraBars.Ribbon.RibbonPage();
             this.ribbonPageGroup5 = new DevExpress.XtraBars.Ribbon.RibbonPageGroup();
             this.rpgIngredients = new DevExpress.XtraBars.Ribbon.RibbonPageGroup();
+            this.ribbonPageGroup1 = new DevExpress.XtraBars.Ribbon.RibbonPageGroup();
             this.gcRecipes = new DevExpress.XtraGrid.GridControl();
             this.gvRecipes = new DevExpress.XtraGrid.Views.Grid.GridView();
             this.gcRecipeName = new DevExpress.XtraGrid.Columns.GridColumn();
@@ -69,7 +70,7 @@
             this.Root = new DevExpress.XtraLayout.LayoutControlGroup();
             this.layoutControlItem1 = new DevExpress.XtraLayout.LayoutControlItem();
             this.layoutControlItem2 = new DevExpress.XtraLayout.LayoutControlItem();
-            this.ribbonPageGroup1 = new DevExpress.XtraBars.Ribbon.RibbonPageGroup();
+            this.bbCopyRecipe = new DevExpress.XtraBars.BarButtonItem();
             ((System.ComponentModel.ISupportInitialize)(this.layoutControl1)).BeginInit();
             this.layoutControl1.SuspendLayout();
             ((System.ComponentModel.ISupportInitialize)(this.tePDFLocationTip.Properties)).BeginInit();
@@ -91,17 +92,17 @@
             this.layoutControl1.Controls.Add(this.tePDFLocationTip);
             this.layoutControl1.Controls.Add(this.gcRecipes);
             this.layoutControl1.Dock = System.Windows.Forms.DockStyle.Fill;
-            this.layoutControl1.Location = new System.Drawing.Point(0, 127);
+            this.layoutControl1.Location = new System.Drawing.Point(0, 132);
             this.layoutControl1.Name = "layoutControl1";
             this.layoutControl1.Root = this.Root;
-            this.layoutControl1.Size = new System.Drawing.Size(1009, 395);
+            this.layoutControl1.Size = new System.Drawing.Size(1009, 390);
             this.layoutControl1.TabIndex = 0;
             this.layoutControl1.Text = "layoutControl1";
             // 
             // tePDFLocationTip
             // 
             this.tePDFLocationTip.Enabled = false;
-            this.tePDFLocationTip.Location = new System.Drawing.Point(37, 371);
+            this.tePDFLocationTip.Location = new System.Drawing.Point(37, 366);
             this.tePDFLocationTip.MenuManager = this.ribbonControl2;
             this.tePDFLocationTip.Name = "tePDFLocationTip";
             this.tePDFLocationTip.Size = new System.Drawing.Size(970, 22);
@@ -129,9 +130,10 @@
             this.bbEditRecipe,
             this.bbRemoveRecipe,
             this.bbViewPDF,
-            this.bscRecipeLocation});
+            this.bscRecipeLocation,
+            this.bbCopyRecipe});
             this.ribbonControl2.Location = new System.Drawing.Point(0, 0);
-            this.ribbonControl2.MaxItemId = 23;
+            this.ribbonControl2.MaxItemId = 24;
             this.ribbonControl2.MdiMergeStyle = DevExpress.XtraBars.Ribbon.RibbonMdiMergeStyle.Always;
             this.ribbonControl2.Name = "ribbonControl2";
             this.ribbonControl2.Pages.AddRange(new DevExpress.XtraBars.Ribbon.RibbonPage[] {
@@ -145,7 +147,7 @@
             this.ribbonControl2.ShowPageHeadersMode = DevExpress.XtraBars.Ribbon.ShowPageHeadersMode.Show;
             this.ribbonControl2.ShowQatLocationSelector = false;
             this.ribbonControl2.ShowToolbarCustomizeItem = false;
-            this.ribbonControl2.Size = new System.Drawing.Size(1009, 127);
+            this.ribbonControl2.Size = new System.Drawing.Size(1009, 132);
             this.ribbonControl2.Toolbar.ShowCustomizeItem = false;
             this.ribbonControl2.ToolbarLocation = DevExpress.XtraBars.Ribbon.RibbonQuickAccessToolbarLocation.Hidden;
             // 
@@ -277,9 +279,16 @@
             // rpgIngredients
             // 
             this.rpgIngredients.ItemLinks.Add(this.bbEditRecipe);
+            this.rpgIngredients.ItemLinks.Add(this.bbCopyRecipe);
             this.rpgIngredients.ItemLinks.Add(this.bbRemoveRecipe);
             this.rpgIngredients.Name = "rpgIngredients";
             this.rpgIngredients.Text = "ribbonPageGroup1";
+            // 
+            // ribbonPageGroup1
+            // 
+            this.ribbonPageGroup1.ItemLinks.Add(this.bbViewPDF);
+            this.ribbonPageGroup1.Name = "ribbonPageGroup1";
+            this.ribbonPageGroup1.Text = "ribbonPageGroup1";
             // 
             // gcRecipes
             // 
@@ -292,7 +301,7 @@
             this.seTotalCostwPackagings,
             this.repositoryItemSpinEdit1,
             this.repositoryItemSpinEdit2});
-            this.gcRecipes.Size = new System.Drawing.Size(1005, 365);
+            this.gcRecipes.Size = new System.Drawing.Size(1005, 360);
             this.gcRecipes.TabIndex = 0;
             this.gcRecipes.ViewCollection.AddRange(new DevExpress.XtraGrid.Views.Base.BaseView[] {
             this.gvRecipes});
@@ -453,7 +462,7 @@
             this.layoutControlItem1,
             this.layoutControlItem2});
             this.Root.Name = "Root";
-            this.Root.Size = new System.Drawing.Size(1009, 395);
+            this.Root.Size = new System.Drawing.Size(1009, 390);
             this.Root.TextVisible = false;
             // 
             // layoutControlItem1
@@ -461,24 +470,26 @@
             this.layoutControlItem1.Control = this.gcRecipes;
             this.layoutControlItem1.Location = new System.Drawing.Point(0, 0);
             this.layoutControlItem1.Name = "layoutControlItem1";
-            this.layoutControlItem1.Size = new System.Drawing.Size(1009, 369);
+            this.layoutControlItem1.Size = new System.Drawing.Size(1009, 364);
             this.layoutControlItem1.TextSize = new System.Drawing.Size(0, 0);
             this.layoutControlItem1.TextVisible = false;
             // 
             // layoutControlItem2
             // 
             this.layoutControlItem2.Control = this.tePDFLocationTip;
-            this.layoutControlItem2.Location = new System.Drawing.Point(0, 369);
+            this.layoutControlItem2.Location = new System.Drawing.Point(0, 364);
             this.layoutControlItem2.Name = "layoutControlItem2";
             this.layoutControlItem2.Size = new System.Drawing.Size(1009, 26);
             this.layoutControlItem2.Text = "Tip:";
             this.layoutControlItem2.TextSize = new System.Drawing.Size(23, 16);
             // 
-            // ribbonPageGroup1
+            // bbCopyRecipe
             // 
-            this.ribbonPageGroup1.ItemLinks.Add(this.bbViewPDF);
-            this.ribbonPageGroup1.Name = "ribbonPageGroup1";
-            this.ribbonPageGroup1.Text = "ribbonPageGroup1";
+            this.bbCopyRecipe.Caption = "Copy Recipe";
+            this.bbCopyRecipe.Id = 23;
+            this.bbCopyRecipe.ImageOptions.SvgImage = ((DevExpress.Utils.Svg.SvgImage)(resources.GetObject("barButtonItem1.ImageOptions.SvgImage")));
+            this.bbCopyRecipe.Name = "bbCopyRecipe";
+            this.bbCopyRecipe.ItemClick += new DevExpress.XtraBars.ItemClickEventHandler(this.bbCopyRecipe_ItemClick);
             // 
             // FormRecipes
             // 
@@ -562,5 +573,6 @@
         private DevExpress.XtraLayout.LayoutControlItem layoutControlItem2;
         private DevExpress.XtraGrid.Columns.GridColumn gridColumn3;
         private DevExpress.XtraBars.Ribbon.RibbonPageGroup ribbonPageGroup1;
+        private DevExpress.XtraBars.BarButtonItem bbCopyRecipe;
     }
 }

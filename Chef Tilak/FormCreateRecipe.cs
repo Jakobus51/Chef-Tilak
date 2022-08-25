@@ -30,8 +30,6 @@ namespace Chef_Tilak
         private ProjectSettings projectSettings;
         private ProjectData projectData;
         private Recipe recipe;
-        private Recipe oldRecipe;
-        private GridHitInfo downHitInfo = null;
 
         public FormCreateRecipe()
         {
@@ -229,11 +227,6 @@ namespace Chef_Tilak
 
                 Name = "",
                 RecipeUnit = "",
-
-
-
-
-
 
             };
 
@@ -510,6 +503,8 @@ namespace Chef_Tilak
             return remainingVolume;
         }
 
+       
+
         #endregion
 
         private void bbSaveRecipe_Click(object sender, EventArgs e)
@@ -540,6 +535,7 @@ namespace Chef_Tilak
             recipe.calculateTotalCostExc();
             recipe.calculateTotalCostInc();
 
+            //if true store the recipe in the projectdata but don't add it yet to the recipes
             if (partialSave)
             {
                 projectData.CurrentRecipe = recipe;
@@ -589,11 +585,8 @@ namespace Chef_Tilak
                     {
                         report.ShowPreview();
                     }
-
-
                 }
-            }
-           
+            }         
             
         }
 
@@ -638,7 +631,6 @@ namespace Chef_Tilak
                     Name = package1.Name,
                     PriceInc = package1.PriceInc,
                     PriceExc = package1.PriceExc,
-                    ColorRoundSticker = package1.ColorRoundSticker,
                     AdditionalCostInc = package1.AdditionalCostInc,
                     AdditionalCostExc = package1.AdditionalCostExc,
                     Volume = package1.Volume,
@@ -659,7 +651,6 @@ namespace Chef_Tilak
                     Name = package2.Name,
                     PriceInc = package2.PriceInc,
                     PriceExc = package2.PriceExc,
-                    ColorRoundSticker = package2.ColorRoundSticker,
                     AdditionalCostInc = package2.AdditionalCostInc,
                     AdditionalCostExc = package2.AdditionalCostExc,
                     Volume = package2.Volume,
@@ -676,13 +667,10 @@ namespace Chef_Tilak
                     ProductionPriceInc = Math.Round(sePricePP3Inc.Value, 2),
                     ProductionPriceExc = Math.Round(sePricePP3Exc.Value, 2),
 
-
-
                     Code = package3.Code,
                     Name = package3.Name,
                     PriceInc = package3.PriceInc,
                     PriceExc = package3.PriceExc,
-                    ColorRoundSticker = package3.ColorRoundSticker,
                     AdditionalCostInc = package3.AdditionalCostInc,
                     AdditionalCostExc = package3.AdditionalCostExc,
                     Volume = package3.Volume,
@@ -706,9 +694,8 @@ namespace Chef_Tilak
                     product.Category = recipe.Category;
                     product.Volume = packaging.RecipeQuantity;
                     product.ProductionCostExc = packaging.ProductionPriceExc;
-                    product.ProductionCostInc = packaging.ProductionPriceInc;                  
-
-
+                    product.ProductionCostInc = packaging.ProductionPriceInc;
+                    product.ProductionCostBreakdown = CalculateProductionCostBreakdown(product);
                 }
                 //Otheriwse create a new one
                 else
@@ -725,16 +712,62 @@ namespace Chef_Tilak
                         Category = recipe.Category,
                         Volume = packaging.RecipeQuantity,
                         ProductionCostExc = packaging.ProductionPriceExc,
-                        ProductionCostInc = packaging.ProductionPriceInc,
+                        ProductionCostInc = packaging.ProductionPriceInc,                        
                         DataPointProfit = "Profit",
                         DataPointMargin = "Margin"
                     };
+                    product.ProductionCostBreakdown = CalculateProductionCostBreakdown(product);
 
                     projectData.ProductList.Add(product);
                 }
             }
+        }
+
+        public List<ProductDataPoint> CalculateProductionCostBreakdown(SellProduct product)
+        {
+            List<ProductDataPoint> costList = new List<ProductDataPoint>();
+
+            //Packaging itself
+            Packaging packaging = projectData.PackagingList.Find(x => x.Code.Equals(product.PackagingCode));
+            costList.Add(new()
+            {
+                Name = packaging.Name,
+                Code = packaging.Code,
+                Category = "Packaging",
+                Cost = packaging.PriceExc,
+            });
+
+            //Packaging additional 
+            if (packaging.AdditionalCostExc != 0)
+            {
+                costList.Add(new()
+                {
+                    Name = "Additional Packaging Cost",
+                    Code = packaging.Code,
+                    Category = "Packaging Additional",
+                    Cost = packaging.AdditionalCostExc,
+                });
+            }           
+
+            //Ingredient Cost 
+            foreach (Ingredient ingredient in recipe.RecipeIngredientList.FindAll(x => x.Code != Guid.Empty))
+            {
+                decimal percentage = ingredient.RecipePriceExc / recipe.TotalIngredientCostExc;
+                //Just the toal cost minus everything that is not an ingredient cost
+                decimal productIngredientCost = product.ProductionCostExc - packaging.PriceExc - packaging.AdditionalCostExc;
+                costList.Add(new()
+                {
+                    Name = ingredient.Name,
+                    Code = ingredient.Code,
+                    Category = "Ingredients",
+                    Cost = productIngredientCost * percentage,
+                });
+            }
+
+            return costList;
 
         }
+
         public void SaveToIngredients()
         {
             if (projectData.BuyIngredientList.Find(x => x.RecipeCode.Equals(recipe.Code)) != null)
@@ -796,11 +829,17 @@ namespace Chef_Tilak
                 msg += "- Please select a packaging type for the third package." + Environment.NewLine;
                 validated = false;
             }
-            if (gvRecipeIngredients.DataRowCount == 0)
+            if (recipe.RecipeIngredientList.FindAll(x=>x.Code != Guid.Empty).Count == 0)
             {
                 msg += "- Please select at least one ingredient." + Environment.NewLine;
                 validated = false;
-            }           
+            }
+            if (projectData.RecipeList.FindAll(x=>x.RecipeName.Equals(teRecipeName.Text)).Count() >0
+                && projectData.RecipeList.FindAll(x => x.Code.Equals(recipe.Code)).Count() == 0)
+            {
+                msg += "- The chosen recipe name is already used." + Environment.NewLine;
+                validated = false;
+            }
 
             return (validated, msg);
         }

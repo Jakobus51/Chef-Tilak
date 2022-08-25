@@ -144,5 +144,11 @@ namespace Chef_Tilak.DataClassses
             }
         }
         #endregion
+
+        /// <summary>
+        /// Create deep copy of whatever
+        /// </summary>
+        /// <returns></returns>
+        
     }
 }

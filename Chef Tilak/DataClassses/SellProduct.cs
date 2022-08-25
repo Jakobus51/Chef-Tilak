@@ -63,7 +63,11 @@ namespace Chef_Tilak.DataClassses
         /// </summary>
         public decimal ProductionCostInc { get; set; }
 
-       
+
+        /// <summary>
+        /// List of all costs accociated with this product (Cost per each ingredient, packagaing etc)
+        /// </summary>
+        public List<ProductDataPoint> ProductionCostBreakdown { get; set; }
 
         /// <summary>
         /// The sale price of this product (exc)
@@ -104,6 +108,12 @@ namespace Chef_Tilak.DataClassses
         /// Is always set to "Profit" for the graphs stuff
         /// </summary>
         public string DataPointProfit { get; set; }
+
+
+        public SellProduct()
+        {
+            this.ProductionCostBreakdown = new();
+        }
 
     }
 }

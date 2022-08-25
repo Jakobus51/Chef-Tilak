@@ -173,8 +173,6 @@
             this.gcColorRoundSticker.FieldName = "ColorRoundSticker";
             this.gcColorRoundSticker.MinWidth = 25;
             this.gcColorRoundSticker.Name = "gcColorRoundSticker";
-            this.gcColorRoundSticker.Visible = true;
-            this.gcColorRoundSticker.VisibleIndex = 2;
             this.gcColorRoundSticker.Width = 111;
             // 
             // luColorRoundSticker
@@ -192,7 +190,7 @@
             this.gridColumn1.MinWidth = 25;
             this.gridColumn1.Name = "gridColumn1";
             this.gridColumn1.Visible = true;
-            this.gridColumn1.VisibleIndex = 3;
+            this.gridColumn1.VisibleIndex = 2;
             this.gridColumn1.Width = 71;
             // 
             // repositoryItemSpinEdit3
@@ -222,7 +220,7 @@
             this.gridColumn4.MinWidth = 25;
             this.gridColumn4.Name = "gridColumn4";
             this.gridColumn4.Visible = true;
-            this.gridColumn4.VisibleIndex = 4;
+            this.gridColumn4.VisibleIndex = 3;
             // 
             // repositoryItemSpinEdit4
             // 
@@ -246,7 +244,7 @@
             this.gcPackagingPrice.MinWidth = 25;
             this.gcPackagingPrice.Name = "gcPackagingPrice";
             this.gcPackagingPrice.Visible = true;
-            this.gcPackagingPrice.VisibleIndex = 5;
+            this.gcPackagingPrice.VisibleIndex = 4;
             this.gcPackagingPrice.Width = 73;
             // 
             // sePackagingPrice
@@ -271,7 +269,7 @@
             this.gridColumn5.MinWidth = 25;
             this.gridColumn5.Name = "gridColumn5";
             this.gridColumn5.Visible = true;
-            this.gridColumn5.VisibleIndex = 6;
+            this.gridColumn5.VisibleIndex = 5;
             this.gridColumn5.Width = 120;
             // 
             // repositoryItemSpinEdit5
@@ -296,7 +294,7 @@
             this.gcPackagingAdditionalCost.MinWidth = 25;
             this.gcPackagingAdditionalCost.Name = "gcPackagingAdditionalCost";
             this.gcPackagingAdditionalCost.Visible = true;
-            this.gcPackagingAdditionalCost.VisibleIndex = 7;
+            this.gcPackagingAdditionalCost.VisibleIndex = 6;
             this.gcPackagingAdditionalCost.Width = 120;
             // 
             // seAdditionalCost

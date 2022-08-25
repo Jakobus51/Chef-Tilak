@@ -80,7 +80,7 @@ namespace Chef_Tilak.DataClassses
         public decimal RecipePriceInc { get; set; }
 
         /// <summary>
-        /// PriceInc of the ingredient in the recipe
+        /// PriceExc of the ingredient in the recipe
         /// </summary>
         public decimal RecipePriceExc { get; set; }
 
